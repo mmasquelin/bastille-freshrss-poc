@@ -1,3 +1,5 @@
+ARG NEW_DOCROOT=/usr/local/www/apache24/data/FreshRSS-latest/p
+
 PKG apache24 mariadb105-server mod_php74 php74 php74-curl php74-gmp php74-json php74-mbstring php74-mysqli php74-zip 
 
 SYSRC mysql_enable=YES
@@ -7,13 +9,11 @@ SYSRC apache24_flags=""
 SERVICE mysql-server start
 CMD mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'adminpassword';CREATE DATABASE freshrss;CREATE USER 'freshrssuser'@'localhost' IDENTIFIED BY 'freshrsspass';GRANT ALL PRIVILEGES ON freshrss.* TO 'freshrssuser'@'localhost';FLUSH PRIVILEGES;";
 
-CMD httpd -t
-
 CMD curl -o /tmp/freshrss-latest.zip https://codeload.github.com/FreshRSS/FreshRSS/zip/refs/tags/latest
 CMD unzip -d /usr/local/www/apache24/data /tmp/freshrss-latest.zip
 
-CMD sed -i '' 's/DocumentRoot "/usr/local/www/apache24/data"/DocumentRoot "/usr/local/www/apache24/data/FreshRSS-latest/p"/' /usr/local/etc/apache24/httpd.conf
-CMD sed -i '' 's/<Directory "/usr/local/www/apache24/data">/<Directory "/usr/local/www/apache24/data/FreshRSS-latest/p">' /usr/local/etc/apache24/httpd.conf
+CMD sed -ri -e "s,/usr/local/www/apache24/data,${NEW_DOCROOT},g" /usr/local/etc/apache24/httpd.conf
+CMD httpd -t
 
 CMD cp /usr/local/etc/php.ini-production /usr/local/etc/php.ini
 SYSRC php_fpm_enable=yes
