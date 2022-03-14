@@ -1,5 +1,10 @@
+ARG APP_URL=https://codeload.github.com/FreshRSS/FreshRSS/zip/refs/tags/latest
 ARG APP_PATH=/usr/local/www/apache24/data/FreshRSS-latest
 ARG NEW_DOCROOT=/usr/local/www/apache24/data/FreshRSS-latest/p
+ARG DBNAME=freshrss
+ARG DBUSER=fuser
+ARG DBPASS=fpass
+ARG DBAPASS=adminpassword
 
 PKG apache24 mariadb105-server mod_php74 php74 php74-ctype php74-curl php74-dom php74-fileinfo php74-filter php74-gmp php74-json php74-mbstring php74-mysqli php74-pdo_mysql php74-session php74-xml php74-zip 
 
@@ -8,9 +13,9 @@ SYSRC apache24_enable=YES
 SYSRC apache24_flags=""
 
 SERVICE mysql-server start
-CMD mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'adminpassword';CREATE DATABASE freshrss;CREATE USER 'freshrssuser'@'localhost' IDENTIFIED BY 'freshrsspass';GRANT ALL PRIVILEGES ON freshrss.* TO 'freshrssuser'@'localhost';FLUSH PRIVILEGES;";
+CMD mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${DBAPASS}';CREATE DATABASE ${DBNAME};CREATE USER '${DBUSER}'@'localhost' IDENTIFIED BY '${DBPASS}';GRANT ALL PRIVILEGES ON ${DBNAME}.* TO '${DBUSER}'@'localhost';FLUSH PRIVILEGES;";
 
-CMD curl -o /tmp/freshrss-latest.zip https://codeload.github.com/FreshRSS/FreshRSS/zip/refs/tags/latest
+CMD curl -o /tmp/freshrss-latest.zip ${APP_URL}
 CMD unzip -d /usr/local/www/apache24/data /tmp/freshrss-latest.zip
 
 CMD sed -ri -e "s,/usr/local/www/apache24/data,${NEW_DOCROOT},g" /usr/local/etc/apache24/httpd.conf
