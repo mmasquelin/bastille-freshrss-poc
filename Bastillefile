@@ -7,7 +7,7 @@ SYSRC apache24_flags=""
 SERVICE mysql-server start
 CMD mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'adminpassword';CREATE DATABASE freshrss;CREATE USER 'freshrssuser'@'localhost' IDENTIFIED BY 'freshrsspass';GRANT ALL PRIVILEGES ON freshrss.* TO 'freshrssuser'@'localhost';FLUSH PRIVILEGES;";
 
-CMD http -t
+CMD httpd -t
 
 CMD curl -o /tmp/freshrss-latest.zip https://codeload.github.com/FreshRSS/FreshRSS/zip/refs/tags/latest
 CMD unzip -d /usr/local/www/apache24/data /tmp/freshrss-latest.zip
