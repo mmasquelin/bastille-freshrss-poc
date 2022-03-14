@@ -1,7 +1,7 @@
 ARG APP_PATH=/usr/local/www/apache24/data/FreshRSS-latest
 ARG NEW_DOCROOT=/usr/local/www/apache24/data/FreshRSS-latest/p
 
-PKG apache24 mariadb105-server mod_php74 php74 php74-curl php74-gmp php74-json php74-mbstring php74-mysqli php74-zip 
+PKG apache24 mariadb105-server mod_php74 php74 php74-ctype php74-curl php74-dom php74-fileinfo php74-filter php74-gmp php74-json php74-mbstring php74-mysqli php74-pdo_mysql php74-session php74-xml php74-zip 
 
 SYSRC mysql_enable=YES
 SYSRC apache24_enable=YES
