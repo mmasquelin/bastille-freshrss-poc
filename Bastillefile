@@ -25,6 +25,10 @@ CMD chmod go+w ${APP_PATH}/data
 CMD httpd -t
 
 CMD cp /usr/local/etc/php.ini-production /usr/local/etc/php.ini
+CMD sed -ri -e 's,expose_php = On,expose_php = Off,g' /usr/local/etc/php.ini
+CMD sed -ri -e "s,output_buffering = 4096,output_buffering = Off,g" /usr/local/etc/php.ini
+CMD sed -ri -e 's,;date.timezone =,date.timezone = \"Europe\/Paris\",g' /usr/local/etc/php.ini
+CMD sed -ri -e "s,;upload_tmp_dir =,upload_tmp_dir = \/usr\/local\/www\/apache24\/data\/tmp,g" /usr/local/etc/php.ini
 
 CP etc /usr/local/
 SERVICE apache24 start
