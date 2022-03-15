@@ -1,6 +1,8 @@
 ARG APP_URL=https://codeload.github.com/FreshRSS/FreshRSS/zip/refs/tags/latest
 ARG APP_PATH=/usr/local/www/apache24/data/FreshRSS-latest
 ARG NEW_DOCROOT=/usr/local/www/apache24/data/FreshRSS-latest/p
+ARG SRVNAME=127.0.0.1
+ARG SRVMAIL=adminsys@exemple.fr
 ARG DBNAME=freshrss
 ARG DBUSER=fuser
 ARG DBPASS=fpass
@@ -20,10 +22,13 @@ CMD unzip -d /usr/local/www/apache24/data /tmp/freshrss-latest.zip
 CMD rm -f /tmp/freshrss-latest.zip
 
 CMD sed -ri -e "s,/usr/local/www/apache24/data,${NEW_DOCROOT},g" /usr/local/etc/apache24/httpd.conf
+CMD sed -ri -e 's,you@example.com,${SRVMAIL},g' /usr/local/etc/apache24/httpd.conf
+CMD sed -ri -e 's,#ServerName www.example.com:80,ServerName ${SRVNAME},g' /usr/local/etc/apache24/httpd.conf
+CMD sed -ri -e 's,ServerTokens Full,ServerTokens Prod,g' /usr/local/etc/apache24/extra/httpd-default.conf
 CMD chgrp -R www ${APP_PATH}
 CMD chown -R www ${APP_PATH}
 CMD chmod go+w ${APP_PATH}/data 
-CMD httpd -t
+# CMD httpd -t
 
 CMD cp /usr/local/etc/php.ini-production /usr/local/etc/php.ini
 CMD sed -ri -e 's,expose_php = On,expose_php = Off,g' /usr/local/etc/php.ini
