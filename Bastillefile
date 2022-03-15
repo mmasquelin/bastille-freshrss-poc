@@ -34,6 +34,7 @@ CMD cp /usr/local/etc/php.ini-production /usr/local/etc/php.ini
 CMD sed -ri -e 's,expose_php = On,expose_php = Off,g' /usr/local/etc/php.ini
 CMD sed -ri -e "s,output_buffering = 4096,output_buffering = Off,g" /usr/local/etc/php.ini
 CMD sed -ri -e 's,;date.timezone =,date.timezone = \"Europe\/Paris\",g' /usr/local/etc/php.ini
+CMD sed -ri -e 's,pdo_mysql.default_socket=,pdo_mysql.default_socket=\/var\/run\/mysql\/mysql.sock,g' /usr/local/etc/php.ini
 CMD sed -ri -e "s,;upload_tmp_dir =,upload_tmp_dir = \/usr\/local\/www\/apache24\/data\/tmp,g" /usr/local/etc/php.ini
 
 CP etc /usr/local/
